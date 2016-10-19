@@ -6,15 +6,29 @@
 # system information on each node, such as cpu usage and health status. CC also can collect logs 
 # of nginx from all node-hosts. You'd better reference to source code
 
-# author : firefoxbug
-# E-Mail : wanghuafire@gmail.com
-# Blog   : blog.csdn.net/firefoxbug
+# author : mmslake
+# E-Mail : mmslake@gmail.com
+# Blog   : None
 
 ## Check user permissions ##
 if [ $(id -u) != "0" ]; then
   echo "Error: NO PERMISSION! Please login as root to install MAPn."
   exit 1
 fi
+
+function file_noexists_download()
+{
+	FILE_NAME="$1"
+	DOWN_LINK="$2"
+	if [ ! -f "${FILE_NAME}" ]
+	then
+		echo -e "\033[41;37m ERROR \033[0m"
+		echo "${FILE_NAME} does not exist ! download now..."
+		wget -c "${DOWN_LINK}"
+	else
+	    echo "${FILE_NAME} [found]"
+	fi
+}
 
 function killd_server()
 {
@@ -57,16 +71,16 @@ get_char()
 function get_system_basic_info()
 {
 
-	echo "==========================OpenCDN===================================="
+	echo "==========================AmengCDN===================================="
 	echo "*                                                                   *"
 	echo "*                                                                   *"
-	echo "*                     Welcome To OpenCDN                            *"
+	echo "*                     Welcome To AmengCDN                            *"
 	echo "*                                                                   *"
 	echo "*                                                                   *"
-	echo "==========================OpenCDN===================================="
+	echo "==========================AmengCDN===================================="
 
 	echo ""
-	echo "Press any key to start install opencdn , please wait ......"
+	echo "Press any key to start install AmengCDN , please wait ......"
 	char=`get_char`
 
 	OpenCDN_Manage_IP=""
@@ -165,29 +179,35 @@ else
 	exit 1
 fi 
 
-wget http://webserver.googlecode.com/files/pcre-8.10.tar.gz
+#file_noexists_download ./pcre-8.33.tar.gz http://ftp.cs.stanford.edu/pub/exim/pcre/pcre-8.33.tar.gz
+#file_noexists_download ./openssl-1.0.1e.tar.gz http://www.openssl.org/source/openssl-1.0.1e.tar.gz
+#file_noexists_download ./libunwind-0.99-alpha.tar.gz https://download.savannah.gnu.org/releases/libunwind/libunwind-0.99-alpha.tar.gz
+#file_noexists_download ./gperftools-2.0.tar.gz http://pkgs.fedoraproject.org/repo/pkgs/gperftools/gperftools-2.0.tar.gz/13f6e8961bc6a26749783137995786b6/gperftools-2.0.tar.gz
+
+
+wget http://ftp.cs.stanford.edu/pub/exim/pcre/pcre-8.10.tar.gz
 if [ $? -eq 0 ]
 then
 	tar -zxvf pcre-8.10.tar.gz
 	rm -f pcre-8.10.tar.gz
 else
-	echo "Downloading http://webserver.googlecode.com/files/pcre-8.10.tar.gz failured !!!"
+	echo "Downloading http://ftp.cs.stanford.edu/pub/exim/pcre/pcre-8.10.tar.gz failured !!!"
 	exit 1
-fi 
+fi
 
-wget http://mingw-lib.googlecode.com/files/openssl-1.0.0c.tar.gz
+wget http://www.openssl.org/source/openssl-1.0.1e.tar.gz
 if [ $? -eq 0 ]
 then
-	tar -zxvf openssl-1.0.0c.tar.gz
-	rm -f openssl-1.0.0c.tar.gz
+	tar -zxvf openssl-1.0.1e.tar.gz
+	rm -f openssl-1.0.1e.tar.gz
 else
-	echo "Downloading http://mingw-lib.googlecode.com/files/openssl-1.0.0c.tar.gz failured !!!"
+	echo "Downloading http://www.openssl.org/source/openssl-1.0.1e.tar.gz failured !!!"
 	exit 1
-fi 
+fi
 
 if [ "${CPU_ARC}" == "x86_64" ]
 then
-	wget http://fastlnmp.googlecode.com/files/libunwind-0.99-alpha.tar.gz
+	wget https://download.savannah.gnu.org/releases/libunwind/libunwind-0.99-alpha.tar.gz
 	tar zxvf libunwind-0.99-alpha.tar.gz
 	cd libunwind-0.99-alpha/
 	CFLAGS=-fPIC ./configure
@@ -195,13 +215,13 @@ then
 	make CFLAGS=-fPIC install
 fi
 
-wget http://gperftools.googlecode.com/files/gperftools-2.0.tar.gz
+wget http://pkgs.fedoraproject.org/repo/pkgs/gperftools/gperftools-2.0.tar.gz/13f6e8961bc6a26749783137995786b6/gperftools-2.0.tar.gz
 if [ $? -eq 0 ]
 then
 	tar -zxvf gperftools-2.0.tar.gz
 	rm -f gperftools-2.0.tar.gz
 else
-	echo "https://gperftools.googlecode.com/files/gperftools-2.0.tar.gz failured !!!"
+	echo "http://pkgs.fedoraproject.org/repo/pkgs/gperftools/gperftools-2.0.tar.gz/13f6e8961bc6a26749783137995786b6/gperftools-2.0.tar.gz failured !!!"
 	exit 1
 fi 
 
@@ -229,7 +249,7 @@ groupadd www
 useradd -g www -s /bin/false -M www
 
 pushd /tmp/nginx-1.2.0
-./configure --user=www --group=www --prefix=/usr/local/nginx --with-pcre=../pcre-8.10 --with-openssl=../openssl-1.0.0c  --add-module=../ngx_cache_purge-1.6 --with-http_stub_status_module --with-http_ssl_module --with-http_gzip_static_module --without-mail_pop3_module     --without-mail_smtp_module     --without-mail_imap_module     --without-http_uwsgi_module     --without-http_scgi_module --with-google_perftools_module
+./configure --user=www --group=www --prefix=/usr/local/nginx --with-pcre=../pcre-8.10 --with-openssl=../openssl-1.0.1e  --add-module=../ngx_cache_purge-1.6 --with-http_stub_status_module --with-http_ssl_module --with-http_gzip_static_module --without-mail_pop3_module     --without-mail_smtp_module     --without-mail_imap_module     --without-http_uwsgi_module     --without-http_scgi_module --with-google_perftools_module
 make && make install
 if [ $? -ne 0 ];then
 	echo "error"
@@ -344,7 +364,7 @@ echo "==========================OpenCDN===================================="
 
 ## Clean source file
 cd /tmp
-rm -rf gperftools-2.0 nginx-1.2.0 ngx_cache_purge-1.6 openssl-1.0.0c pcre-8.10 nginx.txt *.tar.gz inotify-tools-3.14 ${OLD_DIR}/ocdn_node/
+rm -rf gperftools-2.0 nginx-1.2.0 ngx_cache_purge-1.6 openssl-1.0.1e pcre-8.10 nginx.txt *.tar.gz inotify-tools-3.14 ${OLD_DIR}/ocdn_node/
 
 cd ${OLD_DIR}
 rm -rf inotify-tools* iptables install.sh
