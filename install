@@ -182,7 +182,7 @@ fi
 
 #file_noexists_download ./pcre-8.33.tar.gz http://ftp.cs.stanford.edu/pub/exim/pcre/pcre-8.33.tar.gz
 #file_noexists_download ./openssl-1.0.1e.tar.gz http://www.openssl.org/source/openssl-1.0.1e.tar.gz
-#file_noexists_download ./libunwind-0.99-alpha.tar.gz https://download.savannah.gnu.org/releases/libunwind/libunwind-0.99-alpha.tar.gz
+#file_noexists_download ./libunwind-0.99-alpha.tar.gz http://ftp.twaren.net/Unix/NonGNU/libunwind/libunwind-0.99-alpha.tar.gz
 #file_noexists_download ./gperftools-2.0.tar.gz http://pkgs.fedoraproject.org/repo/pkgs/gperftools/gperftools-2.0.tar.gz/13f6e8961bc6a26749783137995786b6/gperftools-2.0.tar.gz
 
 
@@ -208,7 +208,7 @@ fi
 
 if [ "${CPU_ARC}" == "x86_64" ]
 then
-	wget https://download.savannah.gnu.org/releases/libunwind/libunwind-0.99-alpha.tar.gz
+	wget http://ftp.twaren.net/Unix/NonGNU/libunwind/libunwind-0.99-alpha.tar.gz
 	tar zxvf libunwind-0.99-alpha.tar.gz
 	cd libunwind-0.99-alpha/
 	CFLAGS=-fPIC ./configure
