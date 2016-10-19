@@ -143,9 +143,10 @@ then
 	exit 1;
 fi
 
-mv ${OLD_DIR}/opencdn.conf ${OPENCDN_CONF_PATH}
 
 OLD_DIR=`pwd`
+mv ${OLD_DIR}/opencdn.conf ${OPENCDN_CONF_PATH}
+
 sed -i "s/localhost/$OpenCDN_Manage_IP/g" ${OPENCDN_CONF_PATH}/opencdn.conf
 
 echo "===========================nginx install start===================================="
