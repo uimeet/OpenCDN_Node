@@ -33,6 +33,7 @@ char=`get_char`
 
 service amengcdn stop
 chkconfig --del amengcdn
+rm -f /etc/init.d/amengcdn
 rm -rf /usr/local/amengcdn/
 rm -rf /home/data1/amengcdn/
 crontab -r 
