@@ -35,7 +35,7 @@ function killd_server()
     service amengcdn stop
 
 	kill -9 `ps aux | grep "httpd" | awk "{print $2}"` > /dev/null 2>&1 
-	kill -9 `ps aux | grep "mysqld" | awk "{print $2}"`  > /dev/null 2>&1
+	#kill -9 `ps aux | grep "mysqld" | awk "{print $2}"`  > /dev/null 2>&1
 
 	rm -rf /etc/localtime
 	ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
@@ -58,15 +58,15 @@ function killd_server()
 
 	rpm -qa|grep  httpd
 	rpm -e httpd
-	rpm -qa|grep mysql
-	rpm -e mysql
+	#rpm -qa|grep mysql
+	#rpm -e mysql
 	rpm -qa|grep php
 	rpm -e php
 
 	yum -y remove httpd*
 	yum -y remove php*
-	yum -y remove mysql-server mysql
-	yum -y remove php-mysql
+	#yum -y remove mysql-server mysql
+	#yum -y remove php-mysql
 
 	yum -y install yum-fastestmirror
 	yum -y remove httpd	
@@ -87,11 +87,11 @@ function get_system_basic_info()
 {
 
 	echo "==========================AmengCDN===================================="
-	echo "*                                                                   *"
-	echo "*                                                                   *"
+	echo "*                                                                    *"
+	echo "*                                                                    *"
 	echo "*                     Welcome To AmengCDN                            *"
-	echo "*                                                                   *"
-	echo "*                                                                   *"
+	echo "*                                                                    *"
+	echo "*                                                                    *"
 	echo "==========================AmengCDN===================================="
 
 	echo ""
@@ -340,19 +340,20 @@ echo "===========================nginx install completed========================
 
 #echo "===========================rsync install completed===================================="
 
-mv /etc/init.d/iptables /etc/init.d/iptables.bak
+#mv /etc/init.d/iptables /etc/init.d/iptables.bak
 rm -f /etc/sysconfig/iptables
-rm -f /etc/init.d/iptables 
-mv -f ${OLD_DIR}/iptables_start /etc/init.d/iptables
-chmod u+x /etc/init.d/iptables
+#rm -f /etc/init.d/iptables
+#mv -f ${OLD_DIR}/iptables_start /etc/init.d/iptables
+#chmod u+x /etc/init.d/iptables
 mv -f ${OLD_DIR}/iptables.conf /etc/sysconfig/iptables
+service iptables reload
 service iptables restart
 
-mv -f ${OLD_DIR}/nginxmon  /usr/local/nginx/sbin/ -f
+#mv -f ${OLD_DIR}/nginxmon  /usr/local/nginx/sbin/ -f
 
-chmod u+x /usr/local/nginx/sbin/nginxmon 
-echo "nohup /bin/bash /usr/local/nginx/sbin/nginxmon > ${AMENGCDN_LOG_PATH}/nginxmon.log 2>&1 &" >> /etc/rc.d/rc.local
-nohup /bin/bash /usr/local/nginx/sbin/nginxmon &> ${AMENGCDN_LOG_PATH}/nginxmon.log 2>&1 &
+#chmod u+x /usr/local/nginx/sbin/nginxmon
+#echo "nohup /bin/bash /usr/local/nginx/sbin/nginxmon > ${AMENGCDN_LOG_PATH}/nginxmon.log 2>&1 &" >> /etc/rc.d/rc.local
+#nohup /bin/bash /usr/local/nginx/sbin/nginxmon &> ${AMENGCDN_LOG_PATH}/nginxmon.log 2>&1 &
 
 mv -f ${OLD_DIR}/send_info ${AMENGCDN_EXEC_PATH}
 chmod u+x ${AMENGCDN_EXEC_PATH}/send_info
@@ -378,12 +379,15 @@ mv -f ${OLD_DIR}/amengcdn /etc/init.d/
 chkconfig --add amengcdn
 service amengcdn restart
 
+token=$(head -1 /usr/local/nginx/ocdn_lua/token.lua | awk -F [=\"] '{print $2}')
 echo "==========================AmengCDN===================================="
-echo "*                                                                   *"
+echo "*                                                                    *"
 echo "*service amengcdn [start|stop|restart|status]                        *"
-echo "*sys_info log path : /home/data1/amengcdn/logs/send_info.log                 *"
-echo "*                                                                   *"
+echo "*sys_info log path : /home/data1/amengcdn/logs/send_info.log         *"
+echo "*                                                                    *"
 echo "==========================AmengCDN===================================="
+
+echo -e "\n\033[31mtoken : $token \033[0m\n"
 
 ## Clean source file
 cd /tmp

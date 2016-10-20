@@ -9,11 +9,11 @@ if [ "$user" != "root" ];then
 fi
 
 echo "==========================AmengCDN===================================="
-echo "*                                                                   *"
-echo "*                                                                   *"
+echo "*                                                                    *"
+echo "*                                                                    *"
 echo "*                     Welcome To AmengCDN                            *"
-echo "*                                                                   *"
-echo "*                                                                   *"
+echo "*                                                                    *"
+echo "*                                                                    *"
 echo "==========================AmengCDN===================================="
 
 get_char()
@@ -28,19 +28,20 @@ get_char()
 }
 
 echo ""
-echo "Press any key to start install amengcdn , please wait ......"
+echo "Press any key to start uninstall amengcdn , please wait ......"
 char=`get_char`
 
 service amengcdn stop
 chkconfig --del amengcdn
-rm -rf /etc/amengcdn/
+rm -rf /usr/local/amengcdn/
+rm -rf /home/data1/amengcdn/
 crontab -r 
 
 service nginx stop
 #remove nginx
 echo "remove nginx"
 chkconfig --del nginx
-rm -rf  /tmp/tcmalloc /usr/local/nginx /etc/init.d/nginx /home/cache /home/temp
+rm -rf  /tmp/tcmalloc /usr/local/nginx /etc/init.d/nginx /home/data1/nginx/cache /home/data1/nginx/temp
 rm -f /var/log/nginxmon.log
 
 echo "remove rsync"
@@ -61,4 +62,4 @@ sed -i '/send_info/D' /etc/rc.local
 yum -y remove syslog-ng
 rm -rf /etc/syslog-ng/
 
-rm -f /home/sys_info.pipe /home/node_url.pipe
+rm -f /home/data1/nginx/pipe/
