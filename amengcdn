@@ -1,23 +1,23 @@
 #!/bin/bash
 
-#description: opencdn
+#description: amengcdn
 #chkconfig: 2345 20 81
 
-EXEC="opencdn"
+EXEC="amengcdn"
 EXEC_INFO="send_info"
 PID_FILE="/var/run/$EXEC.pid"
-OPENCDN_LOG_PATH="/var/log/opencdn"
-OPENCDN_EXEC_PATH="/usr/local/opencdn/sbin"
-OPENCDN_CONF_FILE="/usr/local/opencdn/conf/opencdn.conf"
+AMENGCDN_LOG_PATH="/home/data1/amengcdn/logs"
+AMENGCDN_EXEC_PATH="/usr/local/amengcdn/sbin"
+AMENGCDN_CONF_FILE="/usr/local/amengcdn/conf/amengcdn.conf"
 
 . /etc/rc.d/init.d/functions
 
-[ -x ${OPENCDN_EXEC_PATH}/$EXEC_INFO ] || echo "ERROR: $EXEC_INFO not found"
+[ -x ${AMENGCDN_EXEC_PATH}/$EXEC_INFO ] || echo "ERROR: $EXEC_INFO not found"
 [ -f "$PID_FILE" ] || touch $PID_FILE
 
 function change_console_ip()
 {
-	new_console_ip=`cat ${OPENCDN_CONF_FILE} | grep "Console_IP" | awk -F = '{print $2}'`
+	new_console_ip=`cat ${AMENGCDN_CONF_FILE} | grep "Console_IP" | awk -F = '{print $2}'`
 	[ ! -z "${new_console_ip}" ] || return 1
 
 	#change console IP of rsync
@@ -59,7 +59,7 @@ start()
 		/usr/bin/rsync --daemon 
 		service syslog-ng start
 
-		nohup /bin/bash ${OPENCDN_EXEC_PATH}/send_info >> ${OPENCDN_LOG_PATH}/send_info.log 2>&1 &
+		nohup /bin/bash ${AMENGCDN_EXEC_PATH}/send_info >> ${AMENGCDN_LOG_PATH}/send_info.log 2>&1 &
 		echo "running" > $PID_FILE
 		usleep 100
 		echo "Starting $EXEC: [  OK  ]"        

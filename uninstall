@@ -1,6 +1,6 @@
 #!/bin/bash
-#opencdn unistall
-#author : firefoxbug
+#amengcdn unistall
+#author : mmslake
 
 user="`whoami`"
 if [ "$user" != "root" ];then
@@ -8,13 +8,13 @@ if [ "$user" != "root" ];then
 	exit 0;
 fi
 
-echo "==========================OpenCDN===================================="
+echo "==========================AmengCDN===================================="
 echo "*                                                                   *"
 echo "*                                                                   *"
-echo "*                     Welcome To OpenCDN                            *"
+echo "*                     Welcome To AmengCDN                            *"
 echo "*                                                                   *"
 echo "*                                                                   *"
-echo "==========================OpenCDN===================================="
+echo "==========================AmengCDN===================================="
 
 get_char()
 {
@@ -28,12 +28,12 @@ get_char()
 }
 
 echo ""
-echo "Press any key to start install opencdn , please wait ......"
+echo "Press any key to start install amengcdn , please wait ......"
 char=`get_char`
 
-service opencdn stop
-chkconfig --del opencdn
-rm -rf /etc/opencdn/
+service amengcdn stop
+chkconfig --del amengcdn
+rm -rf /etc/amengcdn/
 crontab -r 
 
 service nginx stop

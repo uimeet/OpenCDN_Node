@@ -1,9 +1,9 @@
 #!/bin/bash
-#author : firefoxbug
+#author : mmslake
 
 i=0
 timer=2
-sys_fifo="/usr/local/opencdn/pipe/sys_info.pipe"
+sys_fifo="/home/data1/amengcdn/pipe/sys_info.pipe"
 
 exec 7<>$sys_fifo
 
