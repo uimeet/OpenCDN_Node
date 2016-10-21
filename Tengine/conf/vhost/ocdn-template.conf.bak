@@ -1,18 +1,19 @@
 upstream  {
-        server 174.140.166.208:80 ;
+    server 174.140.166.208:80;
 }
 
 server {
 	listen 80;
 	server_name ocdn.me;
 	gzip on;
+
 	## Logging Access
-		access_log /usr/local/opencdn/pipe/bandwidth.pipe bandwidth;
-		access_log syslog:user:info:logs.ocdn.me:515 access;
-		access_log /home/logs/www_ocdn_me_access.log access;
+    access_log /home/data1/amengcdn/pipe/bandwidth.pipe bandwidth;
+    access_log syslog:user:info:logs.ocdn.me:515 access;
+    access_log /home/data1/nginx/logs/www_ocdn_me_access.log access;
 			
 	if (-d $request_filename) {
-		rewrite ^/(.*)([^/])$ $scheme://$host/$1$2/ permanent;
+	    rewrite ^/(.*)([^/])$ $scheme://$host/$1$2/ permanent;
 	}
 
 	## Cache For Total
@@ -27,7 +28,7 @@ server {
 		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 		proxy_set_header Accept-Encoding "";
 		
-	## Ignore Head
+	    ## Ignore Head
 		proxy_ignore_headers Cache-Control;
 		proxy_hide_header Cache-Control;
 		proxy_ignore_headers Expires;
@@ -35,11 +36,11 @@ server {
 		#proxy_hide_header Set-Cookie;
 		#proxy_ignore_headers Set-Cookie;
 		
-		add_header  OpenCDN-Cache "$upstream_cache_status";
+		add_header  AmengCDN-Cache "$upstream_cache_status";
 		expires 5m;
 
 
-		}
+	}
 
 	## Cache For Common Static Files
 	location ~ .*\.(ico|jpg|jpeg|bmp|gif|png|js|css)$ {
@@ -48,7 +49,7 @@ server {
 		proxy_cache_key $host$uri$is_args$args;
 		proxy_set_header Host $host;
 		
-		add_header  OpenCDN-Cache "$upstream_cache_status";	
+		add_header  AmengCDN-Cache "$upstream_cache_status";
 		expires 5m;
 		proxy_pass	http://$host;
 	}
@@ -59,7 +60,7 @@ server {
 		proxy_set_header Host	$host;
 		proxy_redirect off;
 		proxy_set_header X-Real-IP $remote_addr;
-		add_header  OpenCDN-Cache "$upstream_cache_status";
+		add_header  AmengCDN-Cache "$upstream_cache_status";
 	}
 
 	##  Purge Cache

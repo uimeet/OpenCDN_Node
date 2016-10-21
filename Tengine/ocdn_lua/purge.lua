@@ -17,6 +17,6 @@ local domain = args.domain
 local checkdomain = string.find(domain, "^[0-9a-zA-Z\.\-]+$")
 if not checkdomain then common.json(false, "domain unaccept") end
 
-os.execute("rm -Rf /home/cache/"..domain)
+os.execute("rm -Rf /home/data1/nginx/cache/"..domain)
 
 common.json(true, "has send")
