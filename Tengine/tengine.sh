@@ -142,6 +142,9 @@ chown www:www -R /usr/local/nginx/ocdn_lua
 mkdir /usr/local/nginx/ocdn_conf_bak
 chown www:www -R /usr/local/nginx/ocdn_conf_bak
 
+mkdir -p /usr/local/nginx/conf/pems/
+chown www:www -R /usr/local/nginx/conf/pems/
+
 mkdir /home/cache/
 chown www:www -R /home/cache
 mkdir /home/temp/
