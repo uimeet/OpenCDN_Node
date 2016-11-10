@@ -10,37 +10,53 @@ if (args.token ~= token) then
 	common.json(false, "access deny")
 end
 
-if not args.file then
-	common.json(false, "file arg is empty")
+local value = cjson.decode(post.data)
+if not value then
+	common.json(false, "argument is invalid")
 end
 
-local reload = false
-if args.reload == "yes" then reload = true end
+local reload = value.reload
 
---check file name
-local tmpfile = string.gsub(args.file, "/", " ")
-for ele in string.gfind(tmpfile, "%S+") do
-	local checkdir = string.find(ele, "^[0-9a-zA-Z_\-]+$")
-	local checkfile = string.find(ele, "^[0-9a-zA-Z_\-]*[\.][0-9a-zA-Z_\-]+$")
-	if not checkdir and not checkfile then
-		common.json(false, "unaccess file name!")
-	end
-end
-
-local file,err = io.open(common.nginxPATH..'/conf/'..args.file, "w")
+-- nginx 配置
+local file,err = io.open(common.nginxPATH..'/conf/'..value.filename, "w")
 if not file then
 	common.json(false, err)
 end
 
-if not post.body then
+if not value.content then
 	common.json(false, "the file body is empty")
 end
 
-file:write(post.body)
+file:write(value.content)
 file:close()
+
+-- 证书配置
+-- 删除原来的证书目录
+os.execute('rm -rf '..common.nginxPATH..'/conf/pems/'..value.pems_dir..'/')
+-- 重建目录
+os.execute('mkdir -p '..common.nginxPATH..'/conf/pems/'..value.pems_dir..'/')
+-- 循环写入文件
+if value.pems then
+	local pem_dir = common.nginxPATH..'/conf/pems/'..value.pems_dir..'/'
+	for i, pem in pairs(value.pems) do
+		file, err = io.open(pem_dir..pem.domain..'.crt', 'w')
+		if not file then
+			common.json(false, err)
+		end
+		file:write(pem.crt)
+		file:close()
+		
+                file, err = io.open(pem_dir..pem.domain..'.key', 'w')
+                if not file then
+                        common.json(false, err)
+                end
+                file:write(pem.private_key)
+                file:close()	
+	end
+end
 
 if reload then
 	io.popen(common.nginxPATH..'/sbin/nginx -s reload')
 end
 
-common.json(true, 'has wrote')
+common.json(true, 'sync success')
