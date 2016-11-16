@@ -18,7 +18,7 @@ end
 local reload = value.reload
 
 -- nginx 配置
-local file,err = io.open(common.nginxPATH..'/conf/'..value.filename, "w")
+local file,err = io.open(common.nginxPATH..'/conf/vhost/'..value.filename, "w")
 if not file then
 	common.json(false, err)
 end
