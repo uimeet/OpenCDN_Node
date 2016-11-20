@@ -182,6 +182,8 @@ echo "===========================nginx install completed========================
 #mv -f  ${OLD_DIR}/conf /tmp/
 #cd /tmp
 
+mv ${OLD_DIR}/nginx_logrotate.txt /etc/logrotate.d/nginx
+
 #wget http://nginx.org/download/nginx-1.2.0.tar.gz
 #if [ $? -eq 0 ]
 #then
