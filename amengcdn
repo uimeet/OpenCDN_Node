@@ -49,6 +49,7 @@ stop()
 
 start()
 {
+        setenforce 0
 		if [ "`cat $PID_FILE`" == "running" ];then
 			echo "$EXEC is running"
 			exit 1

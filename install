@@ -129,6 +129,8 @@ get_system_basic_info
 
 killd_server
 
+yum -y install bc
+
 AMENGCDN_LOG_PATH="/home/data1/amengcdn/logs/"
 AMENGCDN_EXEC_PATH="/usr/local/amengcdn/sbin"
 AMENGCDN_CONF_PATH="/usr/local/amengcdn/conf"
